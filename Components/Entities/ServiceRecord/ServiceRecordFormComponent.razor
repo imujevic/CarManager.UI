@@ -1,0 +1,59 @@
+﻿@using MudBlazor
+@inherits ServiceRecordFormViewModel
+
+@if (ServiceRecordCreate != null && ServiceRecordCreate.ServiceRecordId == 0)
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="Service Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordCreate.ServiceDate" For="@(() => ServiceRecordCreate.ServiceDate)" />
+
+                        <MudTextField Label="Service Type" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordCreate.ServiceType" For="@(() => ServiceRecordCreate.ServiceType)" />
+
+                        <MudTextField Label="Car ID" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordCreate.CarId" For="@(() => ServiceRecordCreate.CarId)" />
+
+                        <MudTextField Label="Service Center ID" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordCreate.ServiceCenterId" For="@(() => ServiceRecordCreate.ServiceCenterId)" />
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}
+else
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="Service Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordUpdate.ServiceDate" For="@(() => ServiceRecordUpdate.ServiceDate)" />
+
+                        <MudTextField Label="Service Type" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordUpdate.ServiceType" For="@(() => ServiceRecordUpdate.ServiceType)" />
+
+                        <MudTextField Label="Car ID" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordUpdate.CarId" For="@(() => ServiceRecordUpdate.CarId)" />
+
+                        <MudTextField Label="Service Center ID" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="ServiceRecordUpdate.ServiceCenterId" For="@(() => ServiceRecordUpdate.ServiceCenterId)" />
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}

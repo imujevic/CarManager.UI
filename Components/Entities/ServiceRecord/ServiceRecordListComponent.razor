@@ -1,0 +1,53 @@
+﻿@inherits ServiceRecordListViewModel
+
+<MudTable Class="ml-4 mt-4 mr-4" Elevation="4" Items="@ServiceRecords" Dense Hover="true" Bordered="false" Filter="new Func<ServiceRecordDto, bool>(FilterFunc)" Loading="@Loading">
+    <ToolBarContent>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Tertiary" Variant="Variant.Outlined" style="font-weight: bold;" OnClick="@(() => CreateOrUpdateServiceRecord(new ServiceRecordDto()))">
+            Create new Service Record
+        </MudButton>
+        <MudSpacer />
+        <MudTextField T="string" Label="Search" Variant="Variant.Outlined" @bind-Value="SearchServiceRecord" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"></MudTextField>
+    </ToolBarContent>
+    <ColGroup>
+        <col />
+        <col />
+        <col />
+        <col />
+        <col style="width:2px;" />
+        <col style="width:2px;" />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Service Date</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Service Type</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Car ID</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Service Center ID</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="serviceRecord">
+        <MudTd DataLabel="Service Date">@serviceRecord.ServiceDate</MudTd>
+        <MudTd DataLabel="Service Type">@serviceRecord.ServiceType</MudTd>
+        <MudTd DataLabel="Car ID">@serviceRecord.CarId</MudTd>
+        <MudTd DataLabel="Service Center ID">@serviceRecord.ServiceCenterId</MudTd>
+        
+        <MudTd DataLabel="Update">
+            <MudTooltip Text="Update">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" OnClick="@(() => CreateOrUpdateServiceRecord(serviceRecord))" />
+            </MudTooltip>
+        </MudTd>
+        <MudTd DataLabel="Delete">
+            <MudTooltip Text="Delete">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Primary" Size="Size.Small" OnClick="@(() => DeleteServiceRecord(serviceRecord))" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No service records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Items per page" InfoFormat="@InfoFormat" />
+    </PagerContent>
+</MudTable>

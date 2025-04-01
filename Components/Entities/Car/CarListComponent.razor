@@ -1,0 +1,54 @@
+﻿@inherits CarListViewModel
+
+<MudTable Class="ml-4 mt-4 mr-4" Elevation="4" Items="@Cars" Dense Hover="true" Bordered="false" Filter="new Func<CarDto, bool>(FilterFunc)" Loading="@Loading">
+    <ToolBarContent>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Tertiary" Variant="Variant.Outlined" style="font-weight: bold;" OnClick="@(() => CreateOrUpdateCar(new CarDto()))">
+            Create new Car
+        </MudButton>
+        <MudSpacer />
+        <MudTextField T="string" Label="Search" Variant="Variant.Outlined" @bind-Value="SearchCarName" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"></MudTextField>
+    </ToolBarContent>
+    <ColGroup>
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col style="width:2px;" />
+        <col style="width:2px;" />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Make</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Model</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Year</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Owner</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="car">
+        <MudTd DataLabel="Make">@car.Make</MudTd>
+        <MudTd DataLabel="Model">@car.Model</MudTd>
+        <MudTd DataLabel="Year">@car.Year</MudTd>
+        <MudTd DataLabel="Owner">@car.OwnerName</MudTd>
+        
+        <MudTd DataLabel="Update">
+            <MudTooltip Text="Update">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" OnClick="@(() => CreateOrUpdateCar(car))" />
+            </MudTooltip>
+        </MudTd>
+        <MudTd DataLabel="Delete">
+            <MudTooltip Text="Delete">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Primary" Size="Size.Small" OnClick="@(() => DeleteCar(car))" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No cars found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Items per page" InfoFormat="@InfoFormat" />
+    </PagerContent>
+</MudTable>

@@ -1,0 +1,56 @@
+﻿@inherits BookingListViewModel
+
+<MudTable Class="ml-4 mt-4 mr-4" Elevation="4" Items="@Bookings" Dense Hover="true" Bordered="false" Filter="new Func<BookingDto, bool>(FilterFunc)" Loading="@Loading">
+    <ToolBarContent>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Tertiary" Variant="Variant.Outlined" style="font-weight: bold;" OnClick="@(() => CreateOrUpdateBooking(new BookingDto()))">
+            Create new Booking
+        </MudButton>
+        <MudSpacer />
+        <MudTextField T="string" Label="Search" Variant="Variant.Outlined" @bind-Value="SearchBooking" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"></MudTextField>
+    </ToolBarContent>
+    <ColGroup>
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col style="width:2px;" />
+        <col style="width:2px;" />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Customer</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Car</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Start Date</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">End Date</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Status</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="booking">
+        <MudTd DataLabel="Customer">@booking.CustomerName</MudTd>
+        <MudTd DataLabel="Car">@booking.CarName</MudTd>
+        <MudTd DataLabel="Start Date">@booking.StartDate.ToShortDateString()</MudTd>
+        <MudTd DataLabel="End Date">@booking.EndDate.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Status">@booking.Status</MudTd>
+        
+        <MudTd DataLabel="Update">
+            <MudTooltip Text="Update">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" OnClick="@(() => CreateOrUpdateBooking(booking))" />
+            </MudTooltip>
+        </MudTd>
+        <MudTd DataLabel="Delete">
+            <MudTooltip Text="Delete">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Primary" Size="Size.Small" OnClick="@(() => DeleteBooking(booking))" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No bookings found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Items per page" InfoFormat="@InfoFormat" />
+    </PagerContent>
+</MudTable>

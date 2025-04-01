@@ -1,0 +1,56 @@
+﻿@inherits InspectionListViewModel
+
+<MudTable Class="ml-4 mt-4 mr-4" Elevation="4" Items="@Inspections" Dense Hover="true" Bordered="false" Filter="new Func<InspectionDto, bool>(FilterFunc)" Loading="@Loading">
+    <ToolBarContent>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Color="Color.Tertiary" Variant="Variant.Outlined" style="font-weight: bold;" OnClick="@(() => CreateOrUpdateInspection(new InspectionDto()))">
+            Create new Inspection
+        </MudButton>
+        <MudSpacer />
+        <MudTextField T="string" Label="Search" Variant="Variant.Outlined" @bind-Value="SearchInspection" Clearable="true" Immediate="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Outlined.Search"></MudTextField>
+    </ToolBarContent>
+    <ColGroup>
+        <col />
+        <col />
+        <col />
+        <col />
+        <col />
+        <col style="width:2px;" />
+        <col style="width:2px;" />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Car</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Inspection Date</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Expiration Date</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Inspector</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;">Status</MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+        <MudTh style="color:var(--mud-palette-primary); font-weight: bold;"></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="inspection">
+        <MudTd DataLabel="Car">@inspection.CarName</MudTd>
+        <MudTd DataLabel="Inspection Date">@inspection.InspectionDate.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Expiration Date">@inspection.ExpirationDate.ToShortDateString()</MudTd>
+        <MudTd DataLabel="Inspector">@inspection.InspectorName</MudTd>
+        <MudTd DataLabel="Status">@inspection.Status</MudTd>
+        
+        <MudTd DataLabel="Update">
+            <MudTooltip Text="Update">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" Size="Size.Small" OnClick="@(() => CreateOrUpdateInspection(inspection))" />
+            </MudTooltip>
+        </MudTd>
+        <MudTd DataLabel="Delete">
+            <MudTooltip Text="Delete">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Primary" Size="Size.Small" OnClick="@(() => DeleteInspection(inspection))" />
+            </MudTooltip>
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No inspections found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="Items per page" InfoFormat="@InfoFormat" />
+    </PagerContent>
+</MudTable>

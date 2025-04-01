@@ -1,0 +1,59 @@
+﻿@using MudBlazor
+@inherits OwnerFormViewModel
+
+@if (OwnerCreate != null && OwnerCreate.OwnerId == 0)
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="First Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerCreate.FirstName" For="@(() => OwnerCreate.FirstName)" />
+
+                        <MudTextField Label="Last Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerCreate.LastName" For="@(() => OwnerCreate.LastName)" />
+
+                        <MudTextField Label="Email" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerCreate.Email" For="@(() => OwnerCreate.Email)" />
+
+                        <MudTextField Label="Phone Number" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerCreate.PhoneNumber" For="@(() => OwnerCreate.PhoneNumber)" />
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}
+else
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="First Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerUpdate.FirstName" For="@(() => OwnerUpdate.FirstName)" />
+
+                        <MudTextField Label="Last Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerUpdate.LastName" For="@(() => OwnerUpdate.LastName)" />
+
+                        <MudTextField Label="Email" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerUpdate.Email" For="@(() => OwnerUpdate.Email)" />
+
+                        <MudTextField Label="Phone Number" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="OwnerUpdate.PhoneNumber" For="@(() => OwnerUpdate.PhoneNumber)" />
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}

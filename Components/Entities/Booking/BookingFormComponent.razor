@@ -1,0 +1,73 @@
+﻿@using MudBlazor
+@inherits BookingFormViewModel
+
+@if (BookingCreate != null && BookingCreate.BookingId == 0)
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="Customer Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingCreate.CustomerName" For="@(() => BookingCreate.CustomerName)" />
+
+                        <MudTextField Label="Car Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingCreate.CarName" For="@(() => BookingCreate.CarName)" />
+
+                        <MudDatePicker Label="Start Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingCreate.StartDate" />
+
+                        <MudDatePicker Label="End Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingCreate.EndDate" />
+
+                        <MudSelect Label="Status" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                   @bind-Value="BookingCreate.Status">
+                            <MudSelectItem Value="Confirmed">Confirmed</MudSelectItem>
+                            <MudSelectItem Value="Pending">Pending</MudSelectItem>
+                            <MudSelectItem Value="Cancelled">Cancelled</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}
+else
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="Customer Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingUpdate.CustomerName" For="@(() => BookingUpdate.CustomerName)" />
+
+                        <MudTextField Label="Car Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingUpdate.CarName" For="@(() => BookingUpdate.CarName)" />
+
+                        <MudDatePicker Label="Start Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingUpdate.StartDate" />
+
+                        <MudDatePicker Label="End Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="BookingUpdate.EndDate" />
+
+                        <MudSelect Label="Status" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                   @bind-Value="BookingUpdate.Status">
+                            <MudSelectItem Value="Confirmed">Confirmed</MudSelectItem>
+                            <MudSelectItem Value="Pending">Pending</MudSelectItem>
+                            <MudSelectItem Value="Cancelled">Cancelled</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}

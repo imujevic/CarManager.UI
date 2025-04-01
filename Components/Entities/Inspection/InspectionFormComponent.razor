@@ -1,0 +1,73 @@
+﻿@using MudBlazor
+@inherits InspectionFormViewModel
+
+@if (InspectionCreate != null && InspectionCreate.InspectionId == 0)
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="Car Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionCreate.CarName" For="@(() => InspectionCreate.CarName)" />
+
+                        <MudDatePicker Label="Inspection Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionCreate.InspectionDate" />
+
+                        <MudDatePicker Label="Expiration Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionCreate.ExpirationDate" />
+
+                        <MudTextField Label="Inspector Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionCreate.InspectorName" For="@(() => InspectionCreate.InspectorName)" />
+
+                        <MudSelect Label="Status" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                   @bind-Value="InspectionCreate.Status">
+                            <MudSelectItem Value="Passed">Passed</MudSelectItem>
+                            <MudSelectItem Value="Failed">Failed</MudSelectItem>
+                            <MudSelectItem Value="Pending">Pending</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}
+else
+{
+    <MudDialog Style="width:inherit">
+        <DialogContent>
+            <MudCard>
+                <MudCardContent>
+                    <MudItem xs="12">
+                        <MudTextField Label="Car Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionUpdate.CarName" For="@(() => InspectionUpdate.CarName)" />
+
+                        <MudDatePicker Label="Inspection Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionUpdate.InspectionDate" />
+
+                        <MudDatePicker Label="Expiration Date" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionUpdate.ExpirationDate" />
+
+                        <MudTextField Label="Inspector Name" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                      @bind-Value="InspectionUpdate.InspectorName" For="@(() => InspectionUpdate.InspectorName)" />
+
+                        <MudSelect Label="Status" Variant="Variant.Outlined" Immediate=true Required RequiredError=@ValidationMessage
+                                   @bind-Value="InspectionUpdate.Status">
+                            <MudSelectItem Value="Passed">Passed</MudSelectItem>
+                            <MudSelectItem Value="Failed">Failed</MudSelectItem>
+                            <MudSelectItem Value="Pending">Pending</MudSelectItem>
+                        </MudSelect>
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Tertiary" Variant="Variant.Filled" OnClick="() => Cancel()">Cancel</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Disabled="@Disabled" Variant="Variant.Filled" Color="Color.Tertiary" OnClick="() => CreateOrUpdate()">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+}
