@@ -10,11 +10,18 @@ namespace ViewModels
 {
     public class ComponentBaseViewModel : ComponentBase
     {
-        [Inject] public IProductService? ProductService { get; set; }
-        
-        
-        [Inject] public ICategoryService? CategoryService { get; set; }
-        
+        [Inject] public ICarService? CarService { get; set; }
+
+        [Inject] public IOwnerService? OwnerService { get; set; }
+
+        [Inject] public IBookingService? BookingService { get; set; }
+
+        [Inject] public IInspectionService? InspectionService { get; set; }
+
+        [Inject] public IServiceRecordService? ServiceRecordService { get; set; }
+
+        [Inject] public IServiceCenterService? ServiceCenterService { get; set; }
+
         [Inject] public IAccountService? AccountService { get; set; }
 
         [Inject] public IAuthenticationService? AuthenticationService { get; set; }
