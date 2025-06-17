@@ -1,0 +1,67 @@
+﻿@using MudBlazor
+@using Dto
+@inherits OwnerListViewModel
+
+<MudPaper Class="pa-4">
+    <MudStack Spacing="2">
+        <MudTextField T="string" @bind-Value="SearchText" Placeholder="Search by email..."
+                      Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(() => OpenDialog())">
+            Add Owner
+        </MudButton>
+
+        <MudTable Items="Owners" Filter="FilterFunc" Hover="true">
+            <HeaderContent>
+                <MudTh>First Name</MudTh>
+                <MudTh>Last Name</MudTh>
+                <MudTh>Email</MudTh>
+                <MudTh>Phone</MudTh>
+                <MudTh>Actions</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.FirstName</MudTd>
+                <MudTd>@context.LastName</MudTd>
+                <MudTd>@context.Email</MudTd>
+                <MudTd>@context.PhoneNumber</MudTd>
+                <MudTd>
+                    <MudButton Color="Color.Primary" Variant="Variant.Text" OnClick="@(() => OpenDialog(context))">
+                        Edit
+                    </MudButton>
+                    <MudButton Color="Color.Error" Variant="Variant.Text" OnClick="@(() => Delete(context))">
+                        Delete
+                    </MudButton>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudStack>
+</MudPaper>
+
+@code {
+    private async Task OpenDialog(OwnerDto? owner = null)
+    {
+        var parameters = new DialogParameters();
+
+        if (owner != null)
+        {
+            var updateDto = owner.Adapt<OwnerUpdateDto>();
+            parameters.Add("OwnerUpdate", updateDto);
+        }
+        else
+        {
+            parameters.Add("OwnerCreate", new OwnerCreateDto());
+        }
+
+        var dialog = await DialogService!.ShowAsync<OwnerFormComponent>(
+            owner == null ? "Create Owner" : "Edit Owner",
+            parameters,
+            new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium });
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await OnInitializedAsync(); // Reload the list
+        }
+    }
+}

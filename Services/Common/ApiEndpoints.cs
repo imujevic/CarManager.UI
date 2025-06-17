@@ -3,6 +3,7 @@
     public static class ApiEndpoints
     {
         public const string BaseUrl = "https://localhost:5000/api";
+        public const string AccountController = $"{BaseUrl}/accounts";
         public const string CarController = $"{BaseUrl}/cars";
         public const string OwnerController = $"{BaseUrl}/owners";
         public const string BookingController = $"{BaseUrl}/bookings";

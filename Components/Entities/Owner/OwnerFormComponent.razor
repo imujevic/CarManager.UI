@@ -1,0 +1,19 @@
+﻿@using MudBlazor
+@inherits OwnerFormViewModel
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="First Name" @bind-Value="OwnerCreate.FirstName" Required="true" />
+                <MudTextField Label="Last Name" @bind-Value="OwnerCreate.LastName" Required="true" />
+                <MudTextField Label="Email" @bind-Value="OwnerCreate.Email" Required="true" />
+                <MudTextField Label="Phone Number" @bind-Value="OwnerCreate.PhoneNumber" />
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+        <MudButton OnClick="CreateOrUpdate" Disabled="@Disabled" Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>
