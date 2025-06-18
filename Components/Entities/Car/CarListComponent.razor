@@ -1,0 +1,55 @@
+﻿@using MudBlazor
+@inherits CarListViewModel
+
+<MudPaper Class="pa-4">
+    <MudTextField @bind-Value="SearchText" Placeholder="Search by model..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+
+    <MudButton Color="Color.Primary" OnClick="@(() => OpenDialog())">Add Car</MudButton>
+
+    <MudTable Items="Cars" Filter="FilterFunc">
+        <HeaderContent>
+            <MudTh>Make</MudTh>
+            <MudTh>Model</MudTh>
+            <MudTh>Year</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Make</MudTd>
+            <MudTd>@context.Model</MudTd>
+            <MudTd>@context.Year</MudTd>
+            <MudTd>
+                <MudButton OnClick="@(() => OpenDialog(context))" Color="Color.Primary">Edit</MudButton>
+                <MudButton OnClick="@(() => Delete(context))" Color="Color.Error">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
+
+@code {
+    private async Task OpenDialog(CarDto? car = null)
+    {
+        var parameters = new DialogParameters();
+
+        if (car != null)
+        {
+            var updateDto = car.Adapt<CarUpdateDto>();
+            parameters.Add("CarUpdate", updateDto);
+        }
+        else
+        {
+            parameters.Add("CarCreate", new CarCreateDto());
+        }
+
+        var dialog = await DialogService!.ShowAsync<CarFormComponent>(
+            car == null ? "Create Car" : "Edit Car",
+            parameters,
+            new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small });
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await OnInitializedAsync();
+        }
+    }
+}

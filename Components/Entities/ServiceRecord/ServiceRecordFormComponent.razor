@@ -1,0 +1,52 @@
+﻿@using MudBlazor
+@inherits ServiceRecordFormViewModel
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+                @if (ServiceRecordCreate != null)
+                {
+                    <MudNumericField T="int" Label="Car ID"
+                                     @bind-Value="ServiceRecordCreate.CarId"
+                                     Required="true" />
+
+                    <MudDatePicker T="DateTime?" Label="Service Date"
+                                   @bind-Date="ServiceRecordCreate.ServiceDate"
+                                   Required="true" />
+
+                    <MudTextField Label="Description"
+                                  @bind-Value="ServiceRecordCreate.Description"
+                                  Required="true" />
+
+                    <MudNumericField T="decimal" Label="Cost"
+                                     @bind-Value="ServiceRecordCreate.Cost"
+                                     Required="true" />
+                }
+                else if (ServiceRecordUpdate != null)
+                {
+                    <MudNumericField T="int" Label="Car ID"
+                                     @bind-Value="ServiceRecordUpdate.CarId"
+                                     Required="true" />
+
+                    <MudDatePicker T="DateTime?" Label="Service Date"
+                                   @bind-Date="ServiceRecordUpdate.ServiceDate"
+                                   Required="true" />
+
+                    <MudTextField Label="Description"
+                                  @bind-Value="ServiceRecordUpdate.Description"
+                                  Required="true" />
+
+                    <MudNumericField T="decimal" Label="Cost"
+                                     @bind-Value="ServiceRecordUpdate.Cost"
+                                     Required="true" />
+                }
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Disabled="@Disabled" OnClick="CreateOrUpdate">Save</MudButton>
+    </DialogActions>
+</MudDialog>

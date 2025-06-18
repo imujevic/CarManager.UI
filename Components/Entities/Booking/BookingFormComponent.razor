@@ -1,0 +1,69 @@
+﻿@using MudBlazor
+@using Dto
+@inherits BookingFormViewModel
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+
+                @if (BookingCreate != null)
+                {
+                    <MudNumericField T="int"
+                                     Label="Car ID"
+                                     @bind-Value="BookingCreate.CarId"
+                                     Required="true" />
+
+                    <MudNumericField T="int"
+                                     Label="Owner ID"
+                                     @bind-Value="BookingCreate.OwnerId"
+                                     Required="true" />
+
+                    <MudNumericField T="int"
+                                     Label="Service Center ID"
+                                     @bind-Value="BookingCreate.ServiceCenterId"
+                                     Required="true" />
+
+                    <MudDatePicker T="DateTime"
+                                   Label="Booking Date"
+                                   Date="BookingCreate.BookingDate"
+                                   DateExpression="(() => BookingCreate.BookingDate)"
+                                   Required="true" />
+                }
+                else if (BookingUpdate != null)
+                {
+                    <MudNumericField T="int"
+                                     Label="Car ID"
+                                     @bind-Value="BookingUpdate.CarId"
+                                     Required="true" />
+
+                    <MudNumericField T="int"
+                                     Label="Owner ID"
+                                     @bind-Value="BookingUpdate.OwnerId"
+                                     Required="true" />
+
+                    <MudNumericField T="int"
+                                     Label="Service Center ID"
+                                     @bind-Value="BookingUpdate.ServiceCenterId"
+                                     Required="true" />
+
+                    <MudDatePicker T="DateTime"
+                                   Label="Booking Date"
+                                   Date="BookingUpdate.BookingDate"
+                                   DateExpression="(() => BookingUpdate.BookingDate)"
+                                   Required="true" />
+                }
+
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary"
+                   Disabled="@Disabled"
+                   OnClick="CreateOrUpdate">
+            Save
+        </MudButton>
+    </DialogActions>
+</MudDialog>

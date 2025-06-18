@@ -1,0 +1,73 @@
+﻿@using MudBlazor
+@using Dto
+@inherits ServiceRecordListViewModel
+
+<MudPaper Class="pa-4">
+
+    <MudTextField @bind-Value="SearchText"
+                  Placeholder="Search by description or cost..."
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  Immediate="true"
+                  Class="mb-4" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="@(() => OpenDialog())"
+               Class="mb-4">
+        Add Service Record
+    </MudButton>
+
+    <MudTable Items="ServiceRecords"
+              Filter="FilterFunc"
+              Hover="true"
+              Loading="@Loading">
+
+        <HeaderContent>
+            <MudTh>Car ID</MudTh>
+            <MudTh>Date</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Cost</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@context.CarId</MudTd>
+            <MudTd>@context.ServiceDate?.ToShortDateString()</MudTd>
+            <MudTd>@context.Description</MudTd>
+            <MudTd>@context.Cost.ToString("C")</MudTd>
+            <MudTd>
+                <MudButton Color="Color.Primary" Size="Size.Small" OnClick="@(() => OpenDialog(context))">Edit</MudButton>
+                <MudButton Color="Color.Error" Size="Size.Small" OnClick="@(() => Delete(context))">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
+
+@code {
+    private async Task OpenDialog(ServiceRecordDto? record = null)
+    {
+        var parameters = new DialogParameters();
+
+        if (record != null)
+        {
+            var updateDto = record.Adapt<ServiceRecordUpdateDto>();
+            parameters.Add("ServiceRecordUpdate", updateDto);
+        }
+        else
+        {
+            parameters.Add("ServiceRecordCreate", new ServiceRecordCreateDto { ServiceDate = DateTime.Today });
+        }
+
+        var dialog = await DialogService!.ShowAsync<ServiceRecordFormComponent>(
+            record == null ? "Create Service Record" : "Edit Service Record",
+            parameters,
+            new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true });
+
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await OnInitializedAsync(); // Refresh list
+        }
+    }
+}

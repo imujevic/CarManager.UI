@@ -1,0 +1,74 @@
+﻿@using MudBlazor
+@using Dto
+@inherits BookingListViewModel
+
+<MudPaper Class="pa-4">
+
+    <MudTextField @bind-Value="SearchText"
+                  Placeholder="Search by date (e.g. 01.01.2025)..."
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  Immediate="true"
+                  Class="mb-4" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="@(() => OpenDialog())"
+               Class="mb-4">
+        Add Booking
+    </MudButton>
+
+    <MudTable Items="Bookings"
+              Filter="FilterFunc"
+              Hover="true"
+              Loading="@Loading">
+
+        <HeaderContent>
+            <MudTh>Car ID</MudTh>
+            <MudTh>Owner ID</MudTh>
+            <MudTh>Service Center ID</MudTh>
+            <MudTh>Date</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@context.CarId</MudTd>
+            <MudTd>@context.OwnerId</MudTd>
+            <MudTd>@context.ServiceCenterId</MudTd>
+            <MudTd>@context.BookingDate.ToShortDateString()</MudTd>
+            <MudTd>
+                <MudButton Color="Color.Primary" Size="Size.Small" OnClick="@(() => OpenDialog(context))">Edit</MudButton>
+                <MudButton Color="Color.Error" Size="Size.Small" OnClick="@(() => Delete(context))">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+
+    </MudTable>
+</MudPaper>
+
+@code {
+    private async Task OpenDialog(BookingDto? booking = null)
+    {
+        var parameters = new DialogParameters();
+
+        if (booking != null)
+        {
+            var updateDto = booking.Adapt<BookingUpdateDto>();
+            parameters.Add("BookingUpdate", updateDto);
+        }
+        else
+        {
+            parameters.Add("BookingCreate", new BookingCreateDto { BookingDate = DateTime.Today });
+        }
+
+        var dialog = await DialogService!.ShowAsync<BookingFormComponent>(
+            booking == null ? "Create Booking" : "Edit Booking",
+            parameters,
+            new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true });
+
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await OnInitializedAsync(); // refresh
+        }
+    }
+}

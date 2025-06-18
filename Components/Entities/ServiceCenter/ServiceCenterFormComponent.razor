@@ -1,0 +1,28 @@
+﻿@using MudBlazor
+@inherits ServiceCenterFormViewModel
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+                @if (ServiceCenterCreate != null)
+                {
+                    <MudTextField Label="Name" @bind-Value="ServiceCenterCreate.Name" Required="true" />
+                    <MudTextField Label="Address" @bind-Value="ServiceCenterCreate.Address" Required="true" />
+                    <MudTextField Label="Phone Number" @bind-Value="ServiceCenterCreate.PhoneNumber" Required="true" />
+                }
+                else if (ServiceCenterUpdate != null)
+                {
+                    <MudTextField Label="Name" @bind-Value="ServiceCenterUpdate.Name" Required="true" />
+                    <MudTextField Label="Address" @bind-Value="ServiceCenterUpdate.Address" Required="true" />
+                    <MudTextField Label="Phone Number" @bind-Value="ServiceCenterUpdate.PhoneNumber" Required="true" />
+                }
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+        <MudButton OnClick="CreateOrUpdate" Disabled="@Disabled" Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>

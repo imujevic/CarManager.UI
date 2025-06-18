@@ -1,0 +1,18 @@
+﻿@using MudBlazor
+@inherits CarFormViewModel
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Make" @bind-Value="CarCreate.Make" Required="true" />
+                <MudTextField Label="Model" @bind-Value="CarCreate.Model" Required="true" />
+                <MudNumericField T="int" Label="Year" @bind-Value="CarCreate.Year" Required="true" />
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+        <MudButton OnClick="CreateOrUpdate" Disabled="@Disabled" Color="Color.Primary">Save</MudButton>
+    </DialogActions>
+</MudDialog>

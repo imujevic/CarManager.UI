@@ -1,0 +1,69 @@
+﻿@using MudBlazor
+@inherits ServiceCenterListViewModel
+
+<MudPaper Class="pa-4">
+    <MudTextField @bind-Value="SearchText"
+                  Placeholder="Search by name..."
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  Immediate="true"
+                  Class="mb-4" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="@(() => OpenDialog())"
+               Class="mb-4">
+        Add Service Center
+    </MudButton>
+
+    <MudTable Items="ServiceCenters"
+              Filter="FilterFunc"
+              Hover="true"
+              Loading="@Loading">
+
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Address</MudTh>
+            <MudTh>Phone</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd>@context.Name</MudTd>
+            <MudTd>@context.Address</MudTd>
+            <MudTd>@context.PhoneNumber</MudTd>
+            <MudTd>
+                <MudButton OnClick="@(() => OpenDialog(context))" Color="Color.Primary" Size="Size.Small">Edit</MudButton>
+                <MudButton OnClick="@(() => Delete(context))" Color="Color.Error" Size="Size.Small">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
+
+@code {
+    private async Task OpenDialog(ServiceCenterDto? center = null)
+    {
+        var parameters = new DialogParameters();
+
+        if (center != null)
+        {
+            var updateDto = center.Adapt<ServiceCenterUpdateDto>();
+            parameters.Add("ServiceCenterUpdate", updateDto);
+        }
+        else
+        {
+            parameters.Add("ServiceCenterCreate", new ServiceCenterCreateDto());
+        }
+
+        var dialog = await DialogService!.ShowAsync<ServiceCenterFormComponent>(
+            center == null ? "Create Service Center" : "Edit Service Center",
+            parameters,
+            new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true });
+
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await OnInitializedAsync();
+        }
+    }
+}

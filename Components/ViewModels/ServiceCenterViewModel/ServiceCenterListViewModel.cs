@@ -1,37 +1,64 @@
 ﻿using System.Collections.ObjectModel;
+using Dto;
 
 namespace ViewModels;
 
 public class ServiceCenterListViewModel : ComponentBaseViewModel
 {
-    protected ObservableCollection<ServiceCenterDto> Centers { get; set; } = [];
-    protected string? SearchText;
     protected bool Loading;
+    protected string? SearchText;
 
-    protected override async Task OnInitializedAsync() => await Load();
+    public ObservableCollection<ServiceCenterDto> ServiceCenters { get; set; } = new();
 
-    private async Task Load()
+    protected override async Task OnInitializedAsync()
     {
-        Loading = true;
-        Centers = await ServiceCenterService!.GetAll();
-        Loading = false;
+        await LoadServiceCenters();
     }
 
-    protected async Task Delete(ServiceCenterDto center)
+    protected async Task LoadServiceCenters()
     {
-        var result = await DialogService!.ShowMessageBox("Confirm", "Delete this service center?", yesText: "Delete");
-        if (result == true)
+        try
         {
-            var res = await ServiceCenterService!.Delete(center.Id);
-            if (res.IsSuccess)
+            Loading = true;
+            ServiceCenters = await ServiceCenterService!.GetAll();
+        }
+        catch (HttpRequestException ex)
+        {
+            Snackbar?.Add($"Failed to load: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    protected async Task Delete(ServiceCenterDto serviceCenter)
+    {
+        var confirm = await DialogService!.ShowMessageBox(
+            title: "Delete Confirmation",
+            markupMessage: (MarkupString)$"Are you sure you want to delete <b>{serviceCenter.Name}</b>?",
+            yesText: "Delete", cancelText: "Cancel");
+
+        if (confirm == true)
+        {
+            var response = await ServiceCenterService!.Delete(serviceCenter.Id);
+            if (response.IsSuccess)
             {
-                Centers.Remove(center);
-                Snackbar!.Add("Deleted.", Severity.Success);
+                ServiceCenters.Remove(serviceCenter);
+                Snackbar!.Add("Deleted successfully.", Severity.Success);
+            }
+            else
+            {
+                Snackbar!.Add("Failed to delete.", Severity.Error);
             }
         }
     }
 
-    protected bool FilterFunc(ServiceCenterDto c) =>
-        string.IsNullOrWhiteSpace(SearchText) ||
-        c.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+    protected bool FilterFunc(ServiceCenterDto sc)
+    {
+        return string.IsNullOrWhiteSpace(SearchText)
+               || sc.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+               || sc.Address.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+               || sc.PhoneNumber.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+    }
 }

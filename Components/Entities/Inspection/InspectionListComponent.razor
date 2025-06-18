@@ -1,0 +1,75 @@
+﻿@using MudBlazor
+@inherits InspectionListViewModel
+
+<MudPaper Class="pa-4">
+    <MudTextField @bind-Value="SearchText"
+                  Placeholder="Search by result..."
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  Immediate="true"
+                  Class="mb-4" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               OnClick="() => OpenDialog()"
+               Class="mb-4">
+        Add Inspection
+    </MudButton>
+
+    <MudTable Items="Inspections"
+              Filter="FilterFunc"
+              Hover="true"
+              Loading="@Loading">
+
+        <HeaderContent>
+            <MudTh>Car ID</MudTh>
+            <MudTh>Date</MudTh>
+            <MudTh>Result</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+            <MudTd DataLabel="Car ID">@context.CarId</MudTd>
+            <MudTd DataLabel="Date">@context.InspectionDate?.ToShortDateString() ?? "N/A"</MudTd>
+            <MudTd DataLabel="Result">@context.Result</MudTd>
+            <MudTd DataLabel="Actions">
+                <MudButton Size="Size.Small" Color="Color.Primary" OnClick="@(() => OpenDialog(context))">Edit</MudButton>
+                <MudButton Size="Size.Small" Color="Color.Error" OnClick="@(() => Delete(context))">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
+
+@code {
+    private async Task OpenDialog(InspectionDto? inspection = null)
+    {
+        var parameters = new DialogParameters();
+
+        if (inspection != null)
+        {
+            var updateDto = inspection.Adapt<InspectionUpdateDto>();
+            parameters.Add("InspectionUpdate", updateDto);
+        }
+        else
+        {
+            parameters.Add("InspectionCreate", new InspectionCreateDto());
+        }
+
+        var dialog = await DialogService!.ShowAsync<InspectionFormComponent>(
+            inspection == null ? "Create Inspection" : "Edit Inspection",
+            parameters,
+            new DialogOptions
+                {
+                    CloseButton = true,
+                    MaxWidth = MaxWidth.Small,
+                    FullWidth = true
+                });
+
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            await OnInitializedAsync(); // refresh list
+        }
+    }
+}

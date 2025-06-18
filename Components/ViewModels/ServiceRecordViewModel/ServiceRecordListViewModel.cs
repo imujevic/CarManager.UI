@@ -4,34 +4,57 @@ namespace ViewModels;
 
 public class ServiceRecordListViewModel : ComponentBaseViewModel
 {
-    protected ObservableCollection<ServiceRecordDto> Records { get; set; } = [];
-    protected string? SearchText;
     protected bool Loading;
+    protected string? SearchText;
 
-    protected override async Task OnInitializedAsync() => await Load();
+    public ObservableCollection<ServiceRecordDto> ServiceRecords { get; set; } = new();
 
-    private async Task Load()
+    protected override async Task OnInitializedAsync()
     {
-        Loading = true;
-        Records = await ServiceRecordService!.GetAll();
-        Loading = false;
+        await LoadServiceRecords();
+    }
+
+    protected async Task LoadServiceRecords()
+    {
+        try
+        {
+            Loading = true;
+            ServiceRecords = await ServiceRecordService!.GetAll();
+        }
+        catch (HttpRequestException ex)
+        {
+            Snackbar?.Add($"Failed to load records: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            Loading = false;
+        }
     }
 
     protected async Task Delete(ServiceRecordDto record)
     {
-        var result = await DialogService!.ShowMessageBox("Confirm", "Delete this service record?", yesText: "Delete");
-        if (result == true)
+        var confirm = await DialogService!.ShowMessageBox(
+            title: "Delete Confirmation",
+            markupMessage: (MarkupString)$"Are you sure you want to delete this record?",
+            yesText: "Delete", cancelText: "Cancel");
+
+        if (confirm == true)
         {
-            var res = await ServiceRecordService!.Delete(record.Id);
-            if (res.IsSuccess)
+            var response = await ServiceRecordService!.Delete(record.Id);
+            if (response.IsSuccess)
             {
-                Records.Remove(record);
-                Snackbar!.Add("Deleted.", Severity.Success);
+                ServiceRecords.Remove(record);
+                Snackbar!.Add("Deleted successfully.", Severity.Success);
+            }
+            else
+            {
+                Snackbar!.Add("Failed to delete.", Severity.Error);
             }
         }
     }
 
     protected bool FilterFunc(ServiceRecordDto r) =>
-        string.IsNullOrWhiteSpace(SearchText) ||
-        r.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+        string.IsNullOrWhiteSpace(SearchText)
+        || r.Description.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+        || r.Cost.ToString().Contains(SearchText);
 }

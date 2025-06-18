@@ -1,0 +1,52 @@
+﻿@using MudBlazor
+@inherits InspectionFormViewModel
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardContent>
+                @if (InspectionCreate != null)
+                {
+                    <MudNumericField T="int"
+                                     Label="Car ID"
+                                     @bind-Value="InspectionCreate.CarId"
+                                     Required="true"
+                                     Immediate="true" />
+
+                    <MudDatePicker Label="Inspection Date"
+                                   @bind-Date="InspectionCreate.InspectionDate"
+                                   Required="true" />
+
+                    <MudTextField Label="Result"
+                                  @bind-Value="InspectionCreate.Result"
+                                  Required="true" />
+                }
+                else if (InspectionUpdate != null)
+                {
+                    <MudNumericField T="int"
+                                     Label="Car ID"
+                                     @bind-Value="InspectionUpdate.CarId"
+                                     Required="true"
+                                     Immediate="true" />
+
+                    <MudDatePicker Label="Inspection Date"
+                                   @bind-Date="InspectionUpdate.InspectionDate"
+                                   Required="true" />
+
+                    <MudTextField Label="Result"
+                                  @bind-Value="InspectionUpdate.Result"
+                                  Required="true" />
+                }
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel" Color="Color.Secondary">Cancel</MudButton>
+        <MudButton OnClick="CreateOrUpdate"
+                   Disabled="@Disabled"
+                   Color="Color.Primary">
+            Save
+        </MudButton>
+    </DialogActions>
+</MudDialog>
